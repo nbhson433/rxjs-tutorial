@@ -112,7 +112,7 @@ Khi chạy chương trình bạn sẽ thấy rằng, sau 1 giây thì sẽ emit 
 
 `map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R>`
 
-`Không phải lúc nào observable cũng trả từng phần tử như map trong ts, vơi rxjs thì of sẽ trả về 1 "cục" datas, còn from thì mới trả qua từng data một. Điều đó có nghĩa nó sẽ dựa vào thằng observable bên ngoài trả gì thì map sẽ nhận đó (vd: cả một arr hoặc từng phần tử trong arr)`
+`Không phải lúc nào observable cũng trả từng phần tử như map trong ts, vơi rxjs thì of sẽ trả về 1 "cục" datas, còn from thì mới trả qua từng data một. Điều đó có nghĩa nó sẽ dựa vào thằng observable bên ngoài (parent) trả gì thì map sẽ nhận đó (vd: cả một arr hoặc từng phần tử trong arr)`
 
 Giả sử bạn cần hiển thị thông tin `fullname` của user trong `next` thì bạn sẽ có thể dùng cách nào.
 
@@ -197,6 +197,8 @@ Giờ đây chúng ta đã có một stream `hover$` để biết được khi n
 
 `scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): OperatorFunction<T, R>`
 
+`Giống như reduce nhưng nó sẽ emit luôn từng giá trị, chứ không như reduce chỉ emit giá trị cuối cùng`
+
 Bây giờ mỗi lần stream emit một value, bạn muốn apply một function lên value đó nhưng có sử dụng kèm theo kết quả lưu trữ trước đó (accumulator). Các bạn có thể liên tưởng ngay đến hàm `reduce` của Array.
 
 Ví dụ: Count số lần người dùng đã click vào một button (giống như bài đầu tiên về RxJS).
@@ -238,7 +240,7 @@ users$.pipe(
 
 `reduce<T, R>(accumulator: (acc: T | R, value: T, index?: number) => T | R, seed?: T | R): OperatorFunction<T, T | R>`
 
-Operator này khá giống `scan` là nó sẽ reduce value overtime, nhưng nó sẽ đợi đến khi source complete rồi thì nó mới emit một giá trị cuối cùng và gửi đi `complete`.
+Operator này khá giống `scan` là nó sẽ reduce value overtime, nhưng nó sẽ đợi đến khi source complete (khi observable complete - nếu một observable không complete thì nó sẽ không bao giờ reduce được) rồi thì nó mới emit một giá trị cuối cùng và gửi đi `complete`.
 
 ```ts
 users$.pipe(
@@ -252,7 +254,9 @@ users$.pipe(
 
 `toArray<T>(): OperatorFunction<T, T[]>`
 
-Giả sử bạn cần collect toàn bộ các value emit bởi stream rồi lưu trữ thành một array, sau đó đợi đến khi stream complete thì emit một array và complete. Lúc này bạn hoàn toàn có thể sử dụng `reduce`:
+Giả sử bạn cần collect toàn bộ các value emit bởi stream rồi lưu trữ thành một array, sau đó đợi đến khi stream complete thì emit một array và complete. Lúc này bạn hoàn toàn có thể sử dụng `reduce`: (biến từng phần tử vào một cái array)
+
+`Cũng như reduce, observable cần phải complete nó chạy`
 
 ```ts
 users$.pipe(
@@ -273,6 +277,8 @@ users$.pipe(
 `buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]>`
 
 Lưu trữ giá trị được emit ra và đợi đến khi closingNotifier emit thì emit những giá trị đó thành 1 array.
+
+`Khi không muốn bỏ qua giá trị khi subscribe, nhưng cần phải có hiệu lệnh thì mới hiển thị dùng buffer`
 
 ```ts
 const interval$ = interval(1000);
@@ -302,6 +308,8 @@ const subscribe = buffer$.subscribe(
 `bufferTime<T>(bufferTimeSpan: number): OperatorFunction<T, T[]>`
 
 Tương tự như `buffer`, nhưng emit values mỗi khoảng thời gian `bufferTimeSpan` ms.
+
+`Thay vì sử dụng hiệu lệnh nào đó thì với bufferTime ta sẽ sử dụng time`
 
 ```ts
 const source = interval(500);

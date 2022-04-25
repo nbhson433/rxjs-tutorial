@@ -1,5 +1,5 @@
-import { fromEvent, merge, of } from 'rxjs'; 
-import { delay, map, pluck } from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, interval, merge, of } from 'rxjs'; 
+import { buffer, bufferTime, delay, map, pluck, reduce, scan, toArray } from 'rxjs/operators';
 
 const observer = {
     next: (val: any) => console.log(val),
@@ -8,8 +8,8 @@ const observer = {
 };
 
 const users = [
-    {id: 'e3653f2ae67', username: 'sonnguyen', firstname: 'Son', lastname: 'Nguyen'},
-    {id: '160bd7e3cc5', username: 'phuongtrinh', firstname: 'Phuong', lastname: 'Trinh'},
+    {id: 'e3653f2ae67', username: 'sonnguyen', firstname: 'Son', lastname: 'Nguyen', postCount: 15},
+    {id: '160bd7e3cc5', username: 'phuongtrinh', firstname: 'Phuong', lastname: 'Trinh', postCount: 20},
 ];
 
 /** map */
@@ -55,3 +55,65 @@ const users = [
 //         map(() => false)
 //     )
 // ).subscribe(observer)
+
+/** reduce */
+// merge(
+//     of(users[0]),
+//     of(users[1]),
+//     // interval(1000).pipe(map(() => 1)) // mở dòng này ra thì sẽ không bao giờ reduce được
+// )
+// .pipe(
+//     reduce(
+//         (accumulator: any, currentData: any) => 
+//         accumulator + currentData.postCount, 0
+//     )
+// )
+// .subscribe(observer);
+
+/** toArray */
+// merge(
+//     of(users[0]),
+//     of(users[1]),
+// )
+// .pipe(
+//     // reduce((acc: any[], curr: any) => [...acc,curr], [])
+//     toArray() // cách viêt ngắn gọn hơn arr
+// )
+// .subscribe(observer);
+
+/** buffer - bufferTime */
+// const interval$ = interval(1000);
+// const fromEvent$ =  fromEvent(document, 'click')
+
+// interval$
+// .pipe(
+//     // buffer(fromEvent$)
+//     bufferTime(5000)
+// )
+// .subscribe(observer)
+
+/** scan */
+// merge(
+//     of(users[0]),
+//     of(users[1]),
+// )
+// .pipe(
+//     scan(
+//         (accumulator: any, currentData: any) => 
+//         accumulator + currentData.postCount, 0
+//     )
+// )
+// .subscribe(observer);
+
+/** Quản lí state bằng scan */
+let initObject = {}
+let stateSubject = new BehaviorSubject(initObject)
+let state$ = stateSubject
+.asObservable()
+.pipe(
+    scan((acc, curr) => ({...acc, ...curr}), {})
+)
+.subscribe(observer)
+
+stateSubject.next({name: 'Sơn'})
+stateSubject.next({name: 'Sơn', age: 24})
