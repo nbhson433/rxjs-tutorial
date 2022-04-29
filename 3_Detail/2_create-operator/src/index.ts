@@ -23,8 +23,8 @@ const observer = {
 // from(map).subscribe(observer)
 
 /** fromEvent */
-const button = document.querySelector('#button');
-const input = document.querySelector('#input');
+// const button = document.querySelector('#button');
+// const input = document.querySelector('#input');
 // fromEvent(button, 'click').subscribe(observer)
 // fromEvent(input, 'keyup').subscribe(observer)
 
@@ -52,7 +52,8 @@ const input = document.querySelector('#input');
 // throwError('error').subscribe(observer) // ?
 
 /** defer */
-// const random = defer(() => of(Math.random()))
-// random.subscribe(observer)
-// random.subscribe(observer)
-// random.subscribe(observer)
+// const random = of(Math.random())
+const random = defer(() => of(Math.random()))
+random.subscribe(observer)
+random.subscribe(observer)
+random.subscribe(observer)

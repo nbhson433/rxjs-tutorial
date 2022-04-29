@@ -17,6 +17,13 @@ const arr = [1,2,3,4,5,6]
 // )
 // .subscribe(observer)
 
+/** every */
+// of(arr)
+// .pipe(
+//     every(x => x > 3)
+// )
+// .subscribe(observer)
+
 /** fisrt */
 // from(arr)
 // .pipe(
@@ -43,6 +50,7 @@ const arr = [1,2,3,4,5,6]
 /** single */
 // from(arr)
 // .pipe(
+//     // single()
 //     single(x => x > 3) // lỗi vì có nhìu giá trị lớn hơn 3
 // )
 // .subscribe(observer)
@@ -102,7 +110,7 @@ const arr = [1,2,3,4,5,6]
 // .pipe(
 //     distinct() 
 // )
-// .subscribe(observer)
+// .subscribe(observer) // 1 2 3 5 4 6
 
 /** distinctUntilChanged */
 // from([1,2,1,3,5,4,6,3,5,4,2])
@@ -168,12 +176,12 @@ const arr = [1,2,3,4,5,6]
 
 
 /** debounceTime */
-const textInput = document.querySelector('#text')
-fromEvent(textInput, 'keydown')
-.pipe(
-    // gõ tới sáng mai luôn
-    // tới khi ngừng gõ thì sau đó 1.5s mới emit giá trị cuối cùng đi
-    debounceTime(1500), 
-    pluck('srcElement','value')
-)
-.subscribe(observer)
+// const textInput = document.querySelector('#text')
+// fromEvent(textInput, 'keydown')
+// .pipe(
+//     // gõ tới sáng mai luôn
+//     // tới khi ngừng gõ thì sau đó 1.5s mới emit giá trị cuối cùng đi
+//     debounceTime(1500), 
+//     pluck('srcElement','value')
+// )
+// .subscribe(observer)

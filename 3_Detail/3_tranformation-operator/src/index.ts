@@ -68,7 +68,7 @@ const users = [
 //         accumulator + currentData.postCount, 0
 //     )
 // )
-// .subscribe(observer);
+// .subscribe(observer); // 35
 
 /** toArray */
 // merge(
@@ -106,14 +106,14 @@ const users = [
 // .subscribe(observer);
 
 /** Quản lí state bằng scan */
-let initObject = {}
-let stateSubject = new BehaviorSubject(initObject)
-let state$ = stateSubject
-.asObservable()
-.pipe(
-    scan((acc, curr) => ({...acc, ...curr}), {})
-)
-.subscribe(observer)
+// let initObject = {}
+// let stateSubject = new BehaviorSubject(initObject)
+// let state$ = stateSubject
+// .asObservable()
+// .pipe(
+//     scan((acc, curr) => ({...acc, ...curr}), {})
+// )
+// .subscribe(observer)
 
-stateSubject.next({name: 'Sơn'})
-stateSubject.next({name: 'Sơn', age: 24})
+// stateSubject.next({name: 'Sơn'})
+// stateSubject.next({name: 'Sơn', age: 24})

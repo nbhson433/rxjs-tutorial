@@ -1,7 +1,5 @@
 # RxJS Filtering Operators
 
-Hôm nay chúng ta sẽ tiếp tục tìm hiểu về thêm về **RxJS Operators**, điển hình là **Filtering Operators**. Đúng với tên gọi của chúng, các `operators` này được dùng để lược/lọc các giá trị được `emit` từ `Observable` gốc, giống như bạn lược/lọc qua phần tử của 1 `Array` vậy.
-
 ### filter()
 
 `filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>`
@@ -254,7 +252,7 @@ of({ age: 4, name: 'Foo' }, { age: 7, name: 'Bar' }, { age: 5, name: 'Foo' })
 
 `distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): MonoTypeOperatorFunction<T>`
 
-`distinctUntilChanged()` có concept tương tự `distinct()` nhưng khác ở chỗ `distinctUntilChanged()` chỉ so sánh giá trị **sắp** được emit với giá trị **vừa** được emit (giá trị cuối) chứ không so sánh với tất cả giá trị **đã** được emit (2 gía trị kế nhau thôi).
+`distinctUntilChanged()` có concept tương tự `distinct()` nhưng khác ở chỗ `distinctUntilChanged()` chỉ so sánh giá trị **sắp** được emit với giá trị **vừa** được emit (giá trị cuối) chứ không so sánh với tất cả giá trị **đã** được emit.
 
 ```typescript
 from([1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4])
@@ -363,5 +361,3 @@ fromEvent(document, 'click').pipe(sampleTime(1000)).subscribe(console.log); // c
 Cả 4 `operators` này có phần hoạt động khá giống nhau ngoại trừ `debounceTime` là hơi khác biệt. Mình có 1 diagram để mô tả sự khác biệt của 4 loại `operators` này
 
 ![RxJS difference](assets/rxjs-debounce-audit-sample-throttle.png)
-
-_credit: [https://dev.to/kosich/debounce-vs-throttle-vs-audit-vs-sample-difference-you-should-know-1f21](https://dev.to/kosich/debounce-vs-throttle-vs-audit-vs-sample-difference-you-should-know-1f21)_
