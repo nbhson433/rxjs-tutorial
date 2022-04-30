@@ -1,9 +1,5 @@
 # RxJS Higher Order Observables and Utility Operators
 
-Whoa, chúng ta đã cùng nhau tìm hiểu gần hết các **Operators** thường (có thể thường) sử dụng trong ứng dụng **Angular** rồi, còn mấy cái nữa thôi 💪. Ngày hôm nay, chúng ta sẽ cùng nhau tìm hiểu 2 (trong 3) loại **Operators** cuối cùng là: **RxJS Higher Order Observables** và **Utility Operators** nhé.
-
-> Loại **Operator** còn lại là **Multicasting Operator** và đây là loại **Operator** chúng ta sẽ tìm hiểu vào ngày kế tiếp
-
 ## RxJS Higher Order Observables (HOOs)
 
 **HOOs** là những operators mà sẽ nhận vào giá trị của **Outer Observable** (hay còn gọi là **Source**) và sẽ trả về một **Inner Observable** (hay còn gọi là **Destination**) khác. Nhắc lại ngày trước 1 chút, chúng ta đã cùng tìm hiểu về `map()`, là **Transformation Operator**
@@ -19,7 +15,8 @@ Các bạn sẽ thấy là `map()` dùng giá trị của `interval(1000)` là `
 
 #### Nguồn gốc của các HOOs?
 
-Trước khi tìm hiểu về cái HOOs, chúng ta sẽ tìm hiểu các operators sau: `mergeAll()`, `concatAll()`, và `switchAll()`. Như mình vừa nói qua ở trên, operator `map()` dùng để chuyển giá trị được emit từ `Source Observable` sang 1 giá trị mới rồi emit giá trị mới này. Ở ví dụ trên, chúng ta thấy `map()` trả về 1 giá trị bình thường. Vậy trường hợp `map()` trả về giá trị là 1 `Observable` thì sao? Chúng ta hãy thử nhé.
+Trước khi tìm hiểu về cái HOOs, chúng ta sẽ tìm hiểu các operators sau: `mergeAll()`, `concatAll()`, và `switchAll()`. Như mình vừa nói qua ở trên, operator `map()` dùng để chuyển giá trị được emit từ `Source Observable` sang 1 giá trị mới rồi emit giá trị mới này.
+Ở ví dụ trên, chúng ta thấy `map()` trả về 1 giá trị bình thường. Vậy trường hợp `map()` trả về giá trị là 1 `Observable` thì sao? Chúng ta hãy thử nhé.
 
 ```ts
 fromEvent(document, 'click')
@@ -38,12 +35,17 @@ Như các bạn thấy, chúng ta nhận được `Observable {}` ở trên Cons
 ```ts
 const source = fromEvent(document, 'click').pipe(map(() => interval(1000)));
 
-source.pipe(mergeAll()).subscribe(console.log);
+`mergeAll<number>(concurrent?: number): có bao nhiêu observable thì subscrible bao nhiêu observable, truyền vào number để giới hạn số observable được phép chạy đồng thời`
+source.pipe(mergeAll()).subscribe(console.log); 
+
+`switchMap<Observable<number>, unknown>: nếu đang subscrible vào thằng đầu tiên và phát sinh subscible thứ 2 thì sẽ hủy thứ nhất và chạy thứ 2`
 source.pipe(switchAll()).subscribe(console.log);
+
+`concatAll<number>(): subscrible tuần tự như mergeAll(1)`
 source.pipe(concatAll()).subscribe(console.log);
 ```
 
-Cả 3 `merge/switch/concatAll` sẽ giúp các bạn chuyển **Higher Order Observable** về lại **First Order Observable** bằng cách sẽ `subscribe` vào `Observable` mà `map()` trả về. Nói cách khác, các **Higher Order Observables** chính là `merge/switch/concatAll + map()`. Cách thức hoạt động cũng như tính chất của `merge/switch/concat` khác nhau như thế nào thì chúng ta sẽ tìm hiểu qua các **Higher Order Observables** nhé.
+Cả 3 `mergeAll/switchAll/concatAll` sẽ giúp các bạn chuyển **Higher Order Observable** về lại **First Order Observable** bằng cách sẽ `subscribe` vào `Observable` mà `map()` trả về. Nói cách khác, các **Higher Order Observables** chính là `mergeAll/switchAll/concatAll + map()`. Cách thức hoạt động cũng như tính chất của `merge/switch/concat` khác nhau như thế nào thì chúng ta sẽ tìm hiểu qua các **Higher Order Observables** nhé.
 
 #### Tại sao lại cần HOOs?
 
@@ -364,7 +366,8 @@ fromEvent(document, 'click')
 
 `finalize<T>(callback: () => void): MonoTypeOperatorFunction<T>`
 
-`finalize()` rất đơn giản là 1 operator mà sẽ nhận vào 1 `callback`. `callback` này sẽ được thực thi khi `Observable` complete **hoặc** error. Use-case thường gặp nhất của `finalize()` chính là **stop loader/spinner**, vì chúng ta sẽ muốn cái loader/spinner dừng lại/không hiển thị khi 1 API Request thực hiện xong, cho dù có lỗi hay không có lỗi.
+`finalize()` rất đơn giản là 1 operator mà sẽ nhận vào 1 `callback`. `callback` này sẽ được thực thi khi `Observable` complete **hoặc** error. 
+Use-case thường gặp nhất của `finalize()` chính là **stop loader/spinner**, vì chúng ta sẽ muốn cái loader/spinner dừng lại/không hiển thị khi 1 API Request thực hiện xong, cho dù có lỗi hay không có lỗi.
 
 ```ts
 this.loading = true;

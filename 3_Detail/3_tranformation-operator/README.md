@@ -52,7 +52,7 @@ Giả sử bạn cần collect toàn bộ các value emit bởi stream rồi lư
 
 ### buffer
 
-Khi không muốn bỏ qua giá trị khi subscribe, nhưng cần phải có hiệu lệnh thì mới hiển thị dùng buffe
+Khi không muốn bỏ qua giá trị khi subscribe, nhưng cần phải có hiệu lệnh thì mới hiển thị dùng buffer
 
 ### bufferTime
 

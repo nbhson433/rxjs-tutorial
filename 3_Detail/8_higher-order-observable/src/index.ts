@@ -1,19 +1,68 @@
-import { BehaviorSubject, Subject } from "rxjs"
+import { fromEvent, interval, of,  } from "rxjs"
+import { concatAll, concatMap, map, mergeAll, mergeMap, switchAll, switchMap, take, tap, timeout } from "rxjs/operators"
 
-const createObserver = (observer: any) => ({
-    next: (data: any) => console.log(observer, data),
-    error: (error: any) => console.error(observer, error),
-    complete: () => console.log(observer, 'Completed!')
-})
+const observer = {
+    next: (data: any) => console.log(data),
+    error: (error: any) => console.error(error),
+    complete: () => console.log('Completed!')
+}
 
-const subject = new Subject();
-subject.subscribe(createObserver('A'))
-subject.next('Hello')
-subject.next('word')
-subject.complete()
+/** Concept - HOO */
+// interval(1000)
+// .pipe(
+//     map((data) => of(`I'm an observable ${data}`))
+// )
+// .subscribe({
+//     next: (observable) => {
+//         observable.subscribe(console.log)
+//     }
+// })
 
-const behaviorSubject = new BehaviorSubject('Hello');
-behaviorSubject.subscribe(createObserver('C'))
-behaviorSubject.next('work')
-behaviorSubject.subscribe(createObserver('D'))
-// console.log(behaviorSubject.value); // lưu được giá trị cuối cùng và emit
+/** mergeAll/switchAll/concatAll  */
+// fromEvent(document, 'click')
+// .pipe(
+//     map((data) => interval(1000).pipe(take(3))),
+//     mergeAll(1)
+// )
+// .subscribe(observer)
+
+// fromEvent(document, 'click')
+// .pipe(
+//     map((data) => interval(1000).pipe(take(3))),
+//     concatAll()
+// )
+// .subscribe(observer)
+
+// fromEvent(document, 'click')
+// .pipe(
+//     map((data) => interval(1000).pipe(take(3))),
+//     switchAll()
+// )
+// .subscribe(observer)
+
+/** switchMap */
+// fromEvent(document, 'click')
+// .pipe(
+//     switchMap(() => interval(1000).pipe(take(5)))
+// )
+// .subscribe(observer)
+
+/** mergeMap */
+// fromEvent(document, 'click')
+// .pipe(
+//     mergeMap(() => interval(1000).pipe(take(5)))
+// )
+// .subscribe(observer)
+
+/** concatMap */
+// fromEvent(document, 'click')
+// .pipe(
+//     concatMap(() => interval(1000).pipe(take(5)))
+// )
+// .subscribe(observer)
+
+fromEvent(document, 'click')
+.pipe(
+    timeout(5000)
+)
+.subscribe(console.log);

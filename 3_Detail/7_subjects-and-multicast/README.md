@@ -1,6 +1,183 @@
 # RxJS Subject and Multicasting
 
-Trong ngày đầu tiên tìm hiểu về RxJS chúng ta đã được giới thiệu đến **Observable**, và cũng đã nhắc đến một số kiểu dữ liệu vệ tinh như **Subject**. Vậy **Subject** có chức năng gì trong hệ sinh thái RxJS? Hôm nay chúng ta sẽ cùng tìm hiểu.
+## Observable Execution
+
+Như chúng ta đã biết, đối với các **Observable** thông thường, mỗi khi thực hiện `subscribe` sẽ sinh ra một `execution` mới, và chúng độc lập với nhau.
+
+Ví dụ, chúng ta có một observable như sau:
+
+```ts
+const observable = interval(500).pipe(
+  take(5)
+);
+
+const observerA = {
+  next: (val) => console.log(`Observer A: ${val}`),
+  error: (err) => console.log(`Observer A Error: ${err}`),
+  complete: () => console.log(`Observer A complete`),
+};
+
+observable.subscribe(observerA);
+
+/**
+Output:
+
+Observer A: 0
+Observer A: 1
+Observer A: 2
+Observer A: 3
+Observer A: 4
+Observer A complete
+*/
+```
+
+Giả sử chúng ta subscribe thêm một observer mới sau một khoảng thời gian (ví dụ: 2s)
+
+```ts
+const observable = interval(500).pipe(
+  take(5)
+);
+
+const observerA = {
+  next: (val) => console.log(`Observer A: ${val}`),
+  error: (err) => console.log(`Observer A Error: ${err}`),
+  complete: () => console.log(`Observer A complete`),
+};
+
+observable.subscribe(observerA);
+
+const observerB = {
+  next: (val) => console.log(`Observer B: ${val}`),
+  error: (err) => console.log(`Observer B Error: ${err}`),
+  complete: () => console.log(`Observer B complete`),
+};
+
+setTimeout(() => {
+  observable.subscribe(observerB);
+}, 2000);
+
+/**
+Output:
+
+Observer A: 0
+Observer A: 1
+Observer A: 2
+Observer A: 3
+Observer A: 4
+Observer A complete
+Observer B: 0
+Observer B: 1
+Observer B: 2
+Observer B: 3
+Observer B: 4
+Observer B complete
+*/
+```
+
+Như các bạn có thể thấy, khi hai observer subscribe vào, chúng sinh ra các execution khác nhau.
+
+`Câu hỏi đặt ra là có cách nào để bất cứ khi nào có một observer mới nào subscribe vào thì chúng sẽ share cùng một execution không?`
+
+Hãy xem xét lại một chút về RxJS, nó có apply một design pattern có tên là [Observer Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
+
+![Observer Pattern](assets/observer-pattern.png)
+
+Bây giờ thay vì subscribe riêng lẻ như ở các ví dụ trên, chúng ta hãy thêm một hybrid observer như sau:
+
+```ts
+const hybridObserver = {
+  observers: [],
+  registerObserver(observer) {
+    this.observers.push(observer);
+  },
+  next(value) {
+    this.observers.forEach(observer => observer.next(value));
+  },
+  error(err) {
+    this.observers.forEach(observer => observer.error(err));
+  },
+  complete() {
+    this.observers.forEach(observer => observer.complete());
+  }
+}
+
+hybridObserver.registerObserver(observerA);
+
+observable.subscribe(hybridObserver);
+
+setTimeout(() => {
+  hybridObserver.registerObserver(observerB);
+}, 2000);
+
+/**
+Output:
+
+Observer A: 0
+Observer A: 1
+Observer A: 2
+Observer A: 3
+Observer A: 4
+Observer B: 4
+Observer A complete
+Observer B complete
+/*
+```
+
+Oh wow, chỉ với việc implement Observer Pattern, giờ đây chúng ta đã có thể share được execution, và hoàn toàn có thể share cho nhiều observer khác nữa nếu muốn.
+
+Bây giờ chúng ta sẽ thêm một số thay đổi nhỏ nữa:
+
+```ts
+const hybridObserver = {
+  observers: [],
+  subscribe(observer) {
+    this.observers.push(observer);
+  },
+  next(value) {
+    this.observers.forEach(observer => observer.next(value));
+  },
+  error(err) {
+    this.observers.forEach(observer => observer.error(err));
+  },
+  complete() {
+    this.observers.forEach(observer => observer.complete());
+  }
+}
+
+hybridObserver.subscribe(observerA);
+
+observable.subscribe(hybridObserver);
+
+setTimeout(() => {
+  hybridObserver.subscribe(observerB);
+}, 2000);
+```
+
+Lúc này bạn sẽ thấy rằng `hybridObserver` khá là giống một Observable, lại cũng có những phần của một Observer.
+
+Đây chính là một [`Subject` ở trong RxJS](https://rxjs.dev/api/index/class/Subject).
+
+> A Subject is a special type of Observable that allows values to be multicasted to many Observers. Subjects are like EventEmitters.
+
+> Every Subject is an Observable and an Observer. You can subscribe to a Subject, and you can call next to feed values as well as error and complete.
+
+```ts
+const subject = new Subject();
+
+subject.subscribe(observerA);
+
+observable.subscribe(subject);
+
+setTimeout(() => {
+  subject.subscribe(observerB);
+}, 2000);
+```
+
+Với phương pháp kể trên, chúng ta đã cơ bản chuyển đổi từ một unicast Observable execution sang multicast, bằng cách sử dụng Subject.
+
+- unicast: giống như bạn vào Youtube, mở video nào đó đã được thu sẵn và xem, nó play từ đầu đến cuối video. Một người khác vào xem, Youtube cũng sẽ phát từ đầu đến cuối như thế, hai người không có liên quan gì về thời gian hiện tại của video mà mình đang xem.
+
+- multicast: cũng là hai người (có thể nhiều hơn) vào xem video ở Youtube, nhưng video đó đang phát Live (theo dõi một show truyền hình, hay một trận bóng đá Live chẳng hạn). Lúc này Youtube sẽ phát video Live, và những người vào xem video đó sẽ có cùng một thời điểm của video đó (cùng thời điểm của trận đấu đang diễn ra chẳng hạn).
 
 
 ## Subject

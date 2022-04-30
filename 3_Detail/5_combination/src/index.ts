@@ -38,7 +38,7 @@ const observer = {
 // )
 // .subscribe(observer)
 
-/** merge - thằng nào emit thì ngay thằng đó */
+/** merge - thằng nào emit thì display ngay thằng đó */
 // merge(
 //     interval(1000).pipe(take(3)),
 //     interval(500).pipe(take(6))
@@ -64,8 +64,8 @@ const observer = {
 // of('world').pipe(endWith('Hello')).subscribe(observer);
 
 /** pairwise */
-from([1, 2, 3, 4, 5])
-  .pipe(
-    pairwise(),
-  )
-  .subscribe(observer);
+// from([1, 2, 3, 4, 5])
+//   .pipe(
+//     pairwise(),
+//   )
+//   .subscribe(observer);
