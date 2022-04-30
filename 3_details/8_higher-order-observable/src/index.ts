@@ -60,9 +60,3 @@ const observer = {
 //     concatMap(() => interval(1000).pipe(take(5)))
 // )
 // .subscribe(observer)
-
-fromEvent(document, 'click')
-.pipe(
-    timeout(5000)
-)
-.subscribe(console.log);
