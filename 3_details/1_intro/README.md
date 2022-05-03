@@ -4,6 +4,17 @@ Khi bạn tìm hiểu về Angular, bạn sẽ thấy rằng nó có phụ thu�
 
 Đây vừa là một điểm mạnh, cũng vừa là điểm yếu của Angular. Vì RxJS xử lý asynchronous (không đồng bộ) rất mạnh, nhưng bù lại bạn sẽ phải học thêm một số các concept khác xoay quanh stream. Thinking in streams.
 
+## Reactive Programing
+> Là lập trình các luồng sự kiện (event) bất đồng bộ (async)
+
+Một Stream (luồng) gồm nguồn phát tín hiệu sẽ bắn (emit) đi các event có chứa data trong đó và một nơi để lắng nghe, bắt (listen/subscribe) những tín hiệu được emit đi 
+
+![Stream](Stream.png)
+
+Cấu trúc của Reactive programing
+
+![Stream](Reactive-programing.png)
+
 ## Observable
 
 Trong lập trình đồng bộ thông thường, chúng ta có một kiểu dữ liệu có thể lưu trữ nhiều phần tử đó chính là Array.
