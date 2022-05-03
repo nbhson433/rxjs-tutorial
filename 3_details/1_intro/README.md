@@ -44,7 +44,21 @@ observable.subscribe(observer);
 - Subscription là một object đại diện cho một nguồn tài nguyên có khả năng hủy được, thông thường trong Rxjs là hủy Observable execution.
 
 ### Operators
-- Operators là các pure functions cho phép lập trình functional với Observable.
+- Operators là các pure functions cho phép lập trình functional với Observable. 
+
+VD: Chúng ta sẽ tạo ra một hàm có tên là "multiply_2_pure" với mục đích nhân các số đầu vào với 2 và trả kết quả.
+
+Chúng ta thấy rằng, danh sách các số ban đầu không đổi và hàm cũng không tham chiếu đến bất kỳ một biến nào khác ở ngoài phạm vi của hàm. Trường hợp trên được gọi là Pure Functions (Hàm thuần túy). Nghĩa là nội dung hàm sẽ không thay đổi giá trị của đầu vào hoặc bất kỳ dữ liệu nào tồn tại bên ngoài phạm vi của hàm.
+
+```ts
+function multiply_2_pure(numArr: number[]) {
+  let result = []
+  numArr.forEach(num => {
+    result.push(num*2)
+  });
+  return result
+}
+```
 
 ### Subject
 - Subject để thực hiện việc gửi dữ liệu đến nhiều Observers (multicasting).
