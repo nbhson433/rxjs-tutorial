@@ -1,4 +1,4 @@
-# JavaScript Iterator
+# Iterator Pattern
 
 > Iterator pattern cho phép người dùng lặp qua một tập hợp các đối tượng một cách hiệu quả.
 
