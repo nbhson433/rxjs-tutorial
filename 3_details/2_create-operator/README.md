@@ -38,7 +38,7 @@ Giống như `fromEvent()`, `interval()` không tự động `complete` cho nên
 `timer()` có 2 cách sử dụng:
 
 - 1 tham số (tương tự như setTimeout): Tạo `Observable` mà sẽ emit giá trị sau khi delay 1 khoảng thời gian nhất định. Cách dùng này sẽ tự `complete` nhé.
-- 2 tham số: Tạo `Observable` mà sẽ emit giá trị sau khi delay 1 khoảng thời gian và sẽ emit giá trị sau mỗi chu kỳ sau đó. Cách dùng này tương tự với `interval()` nhưng `timer()` hỗ trợ delay trước khi emit. Vì cách dùng này giống với `interval()` nên sẽ không tự `complete`.
+- 2 tham số (tương tự như interval): Tạo `Observable` mà sẽ emit giá trị sau khi delay 1 khoảng thời gian và sẽ emit giá trị sau mỗi chu kỳ sau đó. Cách dùng này tương tự với `interval()` nhưng `timer()` hỗ trợ delay trước khi emit. Vì cách dùng này giống với `interval()` nên sẽ không tự `complete`.
 
 #### `throwError()`
 
