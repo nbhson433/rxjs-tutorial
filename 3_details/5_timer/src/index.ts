@@ -23,7 +23,7 @@ const arr = [1,2,3,4,5,6]
 // 4s: 3 -> timer còn 500
 // 4.5s: emit 3 => timer disable
 
-/** auditTime */
+/** sampleTime */
 // interval(1000)
 // .pipe(
 //     sampleTime(1500) // bên trong có timer(1500)
@@ -53,12 +53,12 @@ const arr = [1,2,3,4,5,6]
 
 
 /** debounceTime */
-// const textInput = document.querySelector('#text')
-// fromEvent(textInput, 'keydown')
-// .pipe(
-//     // gõ tới sáng mai luôn
-//     // tới khi ngừng gõ thì sau đó 1.5s mới emit giá trị cuối cùng đi
-//     debounceTime(1500), 
-//     pluck('srcElement','value')
-// )
-// .subscribe(observer)
+const textInput = document.querySelector('#text')
+fromEvent(textInput, 'keydown')
+.pipe(
+    // gõ tới sáng mai luôn
+    // tới khi ngừng gõ thì sau đó 1.5s mới emit giá trị cuối cùng đi
+    debounceTime(1500), 
+    pluck('srcElement','value'),
+)
+.subscribe(observer)

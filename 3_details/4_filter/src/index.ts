@@ -92,6 +92,8 @@ const arr = [1,2,3,4,5,6]
 // )
 // .subscribe(observer)
 
+/** -------------------------------- GROUP 4  -------------------------------- */
+
 /** skip */
 // interval(1000)
 // .pipe(
@@ -102,7 +104,8 @@ const arr = [1,2,3,4,5,6]
 /** skipUntil */
 // interval(1000)
 // .pipe(
-//     skipUntil(timer(2000)) // 1 2 3 4 ...
+//     skipUntil(timer(5000)) // 4 5 6 7 ...
+//     // skipUntil(fromEvent(document, 'click')) // 15 16 17 18 ...
 // )
 // .subscribe(observer)
 
@@ -113,6 +116,8 @@ const arr = [1,2,3,4,5,6]
 // )
 // .subscribe(observer)
 
+/** -------------------------------- GROUP 5  -------------------------------- */
+
 /** distinct */
 // from([1,2,1,3,5,4,6,3,5,4,2])
 // .pipe(
@@ -121,18 +126,18 @@ const arr = [1,2,3,4,5,6]
 // .subscribe(observer) // 1 2 3 5 4 6
 
 /** distinctUntilChanged */
-// from([1,2,1,3,5,4,6,3,5,4,2])
+// from([1,1,2,1,3,5,4,6,3,5,4,2])
 // .pipe(
 //     distinctUntilChanged() 
 // )
 // .subscribe(observer)
 
 /** distinctUntilKeyChanged */
-// of(
-//     { age: 4, name: 'Foo' },
-//     { age: 6, name: 'Foo' },
-//     { age: 7, name: 'Bar' },
-//     { age: 5, name: 'Foo' }
-// )
-// .pipe(distinctUntilKeyChanged('name'))
-// .subscribe(observer)
+of(
+    { age: 4, name: 'Foo' },
+    { age: 6, name: 'Foo' },
+    { age: 7, name: 'Bar' },
+    { age: 5, name: 'Foo' }
+)
+.pipe(distinctUntilKeyChanged('name'))
+.subscribe(observer)
