@@ -1,5 +1,5 @@
 import { from, fromEvent, interval, of, timer } from "rxjs"
-import { auditTime, debounceTime, distinct, distinctUntilChanged, distinctUntilKeyChanged, filter, find, first, last, pluck, sampleTime, single, skip, skipUntil, skipWhile, take, takeLast, takeUntil, takeWhile, throttleTime } from "rxjs/operators"
+import { auditTime, debounceTime, distinct, distinctUntilChanged, distinctUntilKeyChanged, every, filter, find, first, last, pluck, sampleTime, single, skip, skipUntil, skipWhile, take, takeLast, takeUntil, takeWhile, throttleTime } from "rxjs/operators"
 
 const observer = {
     next: (data: any) => console.log(data),
@@ -10,52 +10,60 @@ const observer = {
 
 const arr = [1,2,3,4,5,6]
 
-/** filter */
+/** -------------------------------- GROUP 1  -------------------------------- */
+
+/** --filter-- */
 // from(arr)
 // .pipe(
 //     filter(x => x % 2 === 0)
 // )
 // .subscribe(observer)
 
-/** every */
+/** --every-- */
 // of(arr)
 // .pipe(
-//     every(x => x > 3)
+//     every((x: number) => x > 3)
 // )
 // .subscribe(observer)
 
-/** fisrt */
-// from(arr)
-// .pipe(
-//     // first()
-//     first(x => x > 1)
-// )
-// .subscribe(observer)
-
-/** last */
-// from(arr)
-// .pipe(
-//     // last() // 6
-//     last(x => x > 5) // 6
-// )
-// .subscribe(observer)
-
-/** find */
+/** --find-- */
 // from(arr)
 // .pipe(
 //     find(x => x > 3) // 4
 // )
 // .subscribe(observer)
 
-/** single */
+
+/** -------------------------------- GROUP 2  -------------------------------- */
+
+/** --fisrt-- */
 // from(arr)
 // .pipe(
-//     // single()
+//     // first() // 1
+//     first(x => x > 1) // 2
+// )
+// .subscribe(observer)
+
+/** --last-- */
+// from(arr)
+// .pipe(
+//     // last() // 6
+//     last(x => x > 3) // 6
+// )
+// .subscribe(observer)
+
+/** --single-- */
+// from(arr)
+// .pipe(
+//     // single() // lỗi
 //     single(x => x > 3) // lỗi vì có nhìu giá trị lớn hơn 3
 // )
 // .subscribe(observer)
 
-/** take */
+
+/** -------------------------------- GROUP 3  -------------------------------- */
+
+/** --take-- */
 // interval(1000)
 // .pipe(
 //     take(5)

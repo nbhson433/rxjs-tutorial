@@ -16,6 +16,22 @@ from([1, 2, 3, 4, 5, 6])
   .subscribe(console.log); // output: 2, 4, 6
 ```
 
+### find()
+
+`find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, T | undefined>`
+
+Lại là một `operator` có `signature` khác quen thuộc. Giống như `Array.prototype.find()`, `find()` sẽ emit giá trị đầu tiên mà thoả mãn được điều kiện từ `predicate` rồi `complete`. Khác với `first()`, `find()` **phải** có `predicate` và `find()` sẽ không emit `Error` nếu như không có giá trị nào thoả mãn điều kiện.
+
+![RxJS find](assets/rxjs-find.png)
+
+```typescript
+from([1, 2, 3, 4, 5, 6])
+  .pipe(
+    find((x) => x % 2 === 0) // số chẵn
+  )
+  .subscribe(console.log, null, () => console.log('complete')); // output: 2 -> complete
+```
+
 ### first()
 
 `first<T, D>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>`
@@ -76,22 +92,6 @@ from([1, 2, 3, 4, 5, 6])
 of() // an empty Observable
   .pipe(last())
   .subscribe(null, console.log, null); // Error: EmptyError
-```
-
-### find()
-
-`find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, T | undefined>`
-
-Lại là một `operator` có `signature` khác quen thuộc. Giống như `Array.prototype.find()`, `find()` sẽ emit giá trị đầu tiên mà thoả mãn được điều kiện từ `predicate` rồi `complete`. Khác với `first()`, `find()` **phải** có `predicate` và `find()` sẽ không emit `Error` nếu như không có giá trị nào thoả mãn điều kiện.
-
-![RxJS find](assets/rxjs-find.png)
-
-```typescript
-from([1, 2, 3, 4, 5, 6])
-  .pipe(
-    find((x) => x % 2 === 0) // số chẵn
-  )
-  .subscribe(console.log, null, () => console.log('complete')); // output: 2 -> complete
 ```
 
 ### single()
