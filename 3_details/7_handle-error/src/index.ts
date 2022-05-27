@@ -21,14 +21,15 @@ const handleError = () => {
 // throwError(`I'm an error`)
 // .pipe(
 //   catchError((err: any, caught: any) => {
+//     console.log(err); // I'm an error
 //     handleError()
 //     return of('Default error')
 //   })
 // )
-// .subscribe(observer)
+// .subscribe(observer) // Default error
 
 /** retry */
-// const cached = [4, 5];
+// const cached = [1];
 // of(1, 2, 3, 4, 5)
 //   .pipe(
 //     map(n => {
@@ -60,15 +61,15 @@ const handleError = () => {
 // .subscribe(observer)
 
 /** iif */
-const userId = 1
-function trueObservable() {
-  return of('True observable')
-}
-function falseObservable() {
-  return of('False observable')
-}
+// const userId = 1
+// function trueObservable() {
+//   return of('True observable')
+// }
+// function falseObservable() {
+//   return of('False observable')
+// }
 
-defer(() => {
-  return userId != null ? trueObservable() : falseObservable()
-})
-.subscribe(observer)
+// defer(() => {
+//   return userId != null ? trueObservable() : falseObservable()
+// })
+// .subscribe(observer)

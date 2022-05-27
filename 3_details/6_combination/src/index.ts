@@ -9,7 +9,7 @@ const observer = {
 
 /** forkJoin - tất cả phải completed */
 // forkJoin([
-//     of('Hello').pipe(delay(1000)),
+//     Promise.reject('Error'),
 //     of('Word').pipe(delay(2000)),
 //     of('!!!').pipe(delay(3000)),
 // ])
@@ -41,7 +41,7 @@ const observer = {
 /** merge - thằng nào emit thì display ngay thằng đó */
 // merge(
 //     interval(1000).pipe(take(3)),
-//     interval(500).pipe(take(6))
+//     interval(500).pipe(take(6)),
 // )
 // .subscribe(observer) 
 
@@ -58,10 +58,10 @@ const observer = {
 //   .subscribe(observer);
 
 /** startWith */
-// of('world').pipe(startWith('Hello')).subscribe(observer);
+of('world').pipe(startWith('Hello')).subscribe(observer);
 
 /** endWith */
-// of('world').pipe(endWith('Hello')).subscribe(observer);
+of('world').pipe(endWith('Hello')).subscribe(observer);
 
 /** pairwise */
 // from([1, 2, 3, 4, 5])
