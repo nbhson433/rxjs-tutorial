@@ -1,5 +1,5 @@
-import { fromEvent, interval, of,  } from "rxjs"
-import { concatAll, concatMap, map, mergeAll, mergeMap, switchAll, switchMap, take, tap, timeout } from "rxjs/operators"
+import { from, fromEvent, interval, merge, of, timer,  } from "rxjs"
+import { concatAll, concatMap, delay, map, mergeAll, mergeMap, mergeMapTo, switchAll, switchMap, take, tap, timeout } from "rxjs/operators"
 
 const observer = {
     next: (data: any) => console.log(data),
@@ -14,7 +14,8 @@ const observer = {
 // )
 // .subscribe({
 //     next: (observable) => {
-//         observable.subscribe(console.log)
+//         // console.log(observable) // Observable Object
+//         observable.subscribe(console.log) // Value
 //     }
 // })
 
@@ -40,13 +41,6 @@ const observer = {
 // )
 // .subscribe(observer)
 
-/** switchMap */
-// fromEvent(document, 'click')
-// .pipe(
-//     switchMap(() => interval(1000).pipe(take(5)))
-// )
-// .subscribe(observer)
-
 /** mergeMap */
 // fromEvent(document, 'click')
 // .pipe(
@@ -58,5 +52,18 @@ const observer = {
 // fromEvent(document, 'click')
 // .pipe(
 //     concatMap(() => interval(1000).pipe(take(5)))
+// )
+// .subscribe(observer)
+
+/** switchMap */
+// fromEvent(document, 'click')
+// .pipe(
+//     switchMap(() => interval(1000).pipe(take(5)))
+// )
+// .subscribe(observer)
+
+// timer(0, 1000)
+// .pipe(
+//     mergeMapTo(of('Success!'))
 // )
 // .subscribe(observer)
